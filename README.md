@@ -1,6 +1,6 @@
 # Primeiro desafio pós go expert (client-server-api)
 ## Requerimentos
-  * golang versão 1.22.0 ou superior
+  * golang versão 1.22.1 ou superior
   * sqlite3
 
 ## Como executar
