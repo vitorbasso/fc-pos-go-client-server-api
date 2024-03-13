@@ -77,13 +77,13 @@ func startServer(addr string, mux *http.ServeMux) {
 		}
 		log.Println("stopped serving new connections")
 	}()
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-	<-quit
+	shutdownChan := make(chan os.Signal, 1)
+	signal.Notify(shutdownChan, os.Interrupt, syscall.SIGTERM)
+	<-shutdownChan
 	log.Println("server shutting down")
 	server.SetKeepAlivesEnabled(false)
-	shutdownCtx, shutdownRelease := context.WithTimeout(context.Background(), 5*time.Second)
-	defer shutdownRelease()
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdownCancel()
 	if err := server.Shutdown(shutdownCtx); err != nil {
 		log.Printf("server shutdown failed with err: %+v\n", err)
 	}

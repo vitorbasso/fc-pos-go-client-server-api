@@ -33,6 +33,7 @@ func (d *DolarRepository) InsertDolar(dolar *USDBRL) error {
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
 	insertContext, insertCancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
 	defer insertCancel()
 	_, err = stmt.ExecContext(insertContext, dolar.Code, dolar.CodeIn, dolar.Name, dolar.High, dolar.Low, dolar.VarBid, dolar.PctChange, dolar.Bid, dolar.Ask, dolar.Timestamp, dolar.CreateDate)
